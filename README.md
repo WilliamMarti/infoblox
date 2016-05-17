@@ -1,1 +1,3 @@
-# infoblox-wrapper
+# Infoblox
+
+PHP wrapper for Infoblox WAPI
