@@ -7,26 +7,6 @@
 	    public $username;
 	    public $password;
 
-
-	    public function getHostname(){
-
-
-
-	    }
-
-	    public function getUsername(){
-
-
-
-	    }
-
-	    public function getPassword(){
-
-
-
-	    }
-
-
 	    public function __construct($host, $user, $pass){
 
 	    	$this->hostname = $host;
@@ -49,9 +29,10 @@
 				 ))
 			));  
 
-			curl_setopt($ch,CURLOPT_URL,$url); //define url
+			curl_setopt($ch, CURLOPT_URL, $url); //define url
 			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-			curl_setopt($ch,CURLOPT_RETURNTRANSFER,true); //TRUE to return the transfer as a string of the return value of curl_exec() instead of outputting it out directly.
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); //TRUE to return the transfer as a string of the return value of curl_exec() instead of outputting it out directly.
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);  // Disable SSL verification
 			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);  // Disable SSL verification
 			curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);  //http auth type basic
@@ -67,6 +48,7 @@
 
 
 			curl_close($ch);
+
 			return $output;
 
 	    }
