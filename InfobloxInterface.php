@@ -83,7 +83,7 @@
 			$ref = $ipdata[0]["_ref"];
 
 
-			$url = "https://10.227.1.79/wapi/v1.2/" . $ref;
+			$url = $this->hostname . "/wapi/v1.2/" . $ref;
 
 			curl_setopt($ch, CURLOPT_URL,$url); //define url
 			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
