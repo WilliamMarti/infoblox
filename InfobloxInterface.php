@@ -16,18 +16,45 @@
 	    }
 
 	    // method declaration
-	    public function createDNSEntry($entry, $ip) {
+	    public function createDNSEntry($entry, $ip, $extattri) {
 
 	        $ch = curl_init();   //init curl
 
 	        $url = $this->hostname . "/wapi/v1.2/record:host";
 
-	        $json = json_encode(array(
-				 "name" => "$entry",
-				 "ipv4addrs" => array(array(
-					"ipv4addr" => "$ip"
-				 ))
-			));  
+	        if (is_null($extattri){
+
+	        	$json = json_encode(array(
+							 "name" => "$entry",
+							 "ipv4addrs" => array(array(
+								"ipv4addr" => "$ip"
+							 ))
+						));
+
+
+	        }
+	        else {
+
+
+	        	
+	        	$json = array(
+							 "name" => "$entry",
+							 "ipv4addrs" => array(array(
+								"ipv4addr" => "$ip"
+							 ))
+						);      
+
+	        	for($x = 0; x<count($extattri); $x--){
+
+	        		$attri = 
+
+	        		$json["extattrs"][$extattri[$x]]
+
+
+	        	}
+
+	        }
+	        
 
 			curl_setopt($ch, CURLOPT_URL, $url); //define url
 			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
