@@ -13,16 +13,18 @@
 	    	$this->username = $user;
 	    	$this->password = $pass;
 
+
+
 	    }
 
 	    // method declaration
-	    public function createDNSEntry($entry, $ip, $extattri) {
+	    public function createDNSEntry($entry, $ip, $extattri=null) {
 
 	        $ch = curl_init();   //init curl
 
 	        $url = $this->hostname . "/wapi/v1.2/record:host";
 
-	        if (is_null($extattri){
+	        if (is_null($extattri)){
 
 	        	$json = json_encode(array(
 							 "name" => "$entry",
@@ -35,23 +37,39 @@
 	        }
 	        else {
 
-
 	        	
 	        	$json = array(
 							 "name" => "$entry",
 							 "ipv4addrs" => array(array(
 								"ipv4addr" => "$ip"
 							 ))
+							 
+							  
 						);      
 
+
+	        	$json["extattrs"] = array(
+										"Notes" => array(
+											"value" => "test"
+										 )
+						 			);
+
+
+	        	$json = json_encode($json);
+
+
+	        	/*
 	        	for($x = 0; x<count($extattri); $x--){
 
-	        		$attri = 
 
-	        		$json["extattrs"][$extattri[$x]]
 
+	        		$attri = $json["extattrs"][$extattri[$x]];
 
 	        	}
+				*/
+
+
+	        	//$json = array_push($json, $attri);
 
 	        }
 	        
