@@ -47,12 +47,20 @@
 							  
 						);      
 
-
+	        	/*
 	        	$json["extattrs"] = array(
 										"Notes" => array(
 											"value" => "test"
 										 )
 						 			);
+				*/
+
+
+				$json["extattrs"] = $extattri;
+
+
+
+				var_dump($json);
 
 
 	        	$json = json_encode($json);
