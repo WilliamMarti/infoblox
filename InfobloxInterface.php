@@ -47,16 +47,14 @@
 							  
 						);      
 
-	        	/*
-	        	$json["extattrs"] = array(
-										"Notes" => array(
-											"value" => "test"
-										 )
-						 			);
-				*/
+				$attri = array(
+								$extattri[0][0] => array(
+									"value" => $extattri[0][1]
+								 )
+							 );
 
 
-				$json["extattrs"] = $extattri;
+				$json["extattrs"] = $attri;
 
 
 
