@@ -155,6 +155,21 @@
 	    }
 
 
+		/***
+
+			Edit DNS Entry
+			Supply FQDN ofentry to edit
+
+	    ***/
+	    public function createDNSEntry($entry) {
+
+
+
+
+
+	    }
+
+
 	    /***
 
 			Get DNS Entry by hostname
