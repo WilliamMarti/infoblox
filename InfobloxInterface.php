@@ -63,20 +63,6 @@
 
 	        	$json = json_encode($json);
 
-
-	        	/*
-	        	for($x = 0; x<count($extattri); $x--){
-
-
-
-	        		$attri = $json["extattrs"][$extattri[$x]];
-
-	        	}
-				*/
-
-
-	        	//$json = array_push($json, $attri);
-
 	        }
 	        
 
@@ -161,7 +147,61 @@
 			Supply FQDN ofentry to edit
 
 	    ***/
-	    public function createDNSEntry($entry) {
+	    public function editDNSEntry($entry, $newip) {
+
+
+	    	$ch = curl_init();   //init curl
+
+	    	$url = $this->hostname . "/wapi/v1.2/record:host?name~=" . $entry;
+
+
+	    	curl_setopt($ch, CURLOPT_URL,$url); //define url
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER,true); //TRUE to return the transfer as a string of the return value of curl_exec() instead of outputting it out directly.
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);  // Disable SSL verification
+			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);  // Disable SSL verification
+			curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);  //http auth type basic
+			curl_setopt($ch, CURLOPT_USERPWD, $this->username . ":" . $this->password);  //UN and PW
+		    //curl_setopt($ch,CURLOPT_HEADER, false);  //false to not return headers
+
+			$data['data'] = curl_exec($ch);
+			//$output['headers'] = curl_getinfo($ch);
+
+			$ipdata = $data['data'];
+			$ipdata = json_decode($ipdata,true);
+			$ref = $ipdata[0]["_ref"];
+
+
+			$url = $this->hostname . "/wapi/v1.2/" . $ref;
+
+			$json = json_encode(array(
+			 "ipv4addrs" => array(array(
+				"ipv4addr" => "$newip"
+				 ))
+			));
+
+			
+			$ch = curl_init();   //init curl
+
+			curl_setopt($ch, CURLOPT_URL,$url); //define url
+			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT"); 
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER,true); //TRUE to return the transfer as a string of the return value of curl_exec() instead of outputting it out directly.
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);  // Disable SSL verification
+			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);  // Disable SSL verification
+			curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);  //http auth type basic
+			curl_setopt($ch, CURLOPT_USERPWD, $this->username . ":" . $this->password);  //UN and PW
+		    //curl_setopt($ch,CURLOPT_HEADER, false);  //false to not return headers
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
+				'Content-Type: application/json',                                                                                
+				'Content-Length: ' . strlen($json))                                                                       
+			);  
+			$output['data'] = curl_exec($ch);
+			$output['headers'] = curl_getinfo($ch);
+
+
+			curl_close($ch);
+
+
 
 
 
