@@ -17,6 +17,52 @@
 
 	    }
 
+
+
+	    private function restCall($httpmethod, $username, $password, $url, $json = null, $data = null) {
+
+	    	$ch = curl_init();   //init curl
+
+
+	    	curl_setopt($ch, CURLOPT_URL, $url); //define url
+	    	curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $httpmethod);
+
+	    	curl_setopt($ch,CURLOPT_RETURNTRANSFER, true); //TRUE to return the transfer as a string of the return value of curl_exec() instead of outputting it out directly.
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);  // Disable SSL verification
+			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);  // Disable SSL verification
+			curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);  //http auth type basic
+			curl_setopt($ch, CURLOPT_USERPWD, $username . ":" . $password);  //UN and PW
+
+			# if POST, set content-type and legnth
+			if($httpmethod == "POST"){
+
+				curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
+
+				curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
+					'Content-Type: application/json',                                                                                
+					'Content-Length: ' . strlen($json))                                                                       
+				); 
+
+				print "got here\n";
+
+			}
+			else if ($httpmethod == "DELETE"){
+
+
+
+			}
+
+	    	$output['data'] = curl_exec($ch);
+			$output['headers'] = curl_getinfo($ch);
+
+
+			curl_close($ch);
+
+			return $output;
+
+
+	    }
+
 	    // method declaration
 	    public function createDNSEntry($entry, $ip, $extattri=null) {
 
@@ -57,36 +103,13 @@
 				$json["extattrs"] = $attri;
 
 
-
-				var_dump($json);
-
-
 	        	$json = json_encode($json);
 
 	        }
 	        
 
-			curl_setopt($ch, CURLOPT_URL, $url); //define url
-			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-			curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); //TRUE to return the transfer as a string of the return value of curl_exec() instead of outputting it out directly.
-			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);  // Disable SSL verification
-			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);  // Disable SSL verification
-			curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);  //http auth type basic
-			curl_setopt($ch, CURLOPT_USERPWD, $this->username . ":" . $this->password);  //UN and PW
-		    //curl_setopt($ch,CURLOPT_HEADER, false);  //false to not return headers
-			curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
-				'Content-Type: application/json',                                                                                
-				'Content-Length: ' . strlen($json))                                                                       
-			); 
-
-			$output['data'] = curl_exec($ch);
-			$output['headers'] = curl_getinfo($ch);
-
-
-			curl_close($ch);
-
-			return $output;
+	        $this->restCall("POST", $this->username, $this->password, $url, $json);
+			
 
 	    }
 
@@ -267,46 +290,7 @@
 
 	    }
 
-	    /***
-
-			
-
-
-	    ***/
-	    private function restCall($httpmethod, $username, $password, $url, $data = null) {
-
-	    	$ch = curl_init();   //init curl
-
-	    	curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "$httpmethod");
-	    	curl_setopt($ch,CURLOPT_RETURNTRANSFER,true); //TRUE to return the transfer as a string of the return value of curl_exec() instead of outputting it out directly.
-			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);  // Disable SSL verification
-			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);  // Disable SSL verification
-			curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);  //http auth type basic
-			curl_setopt($ch, CURLOPT_USERPWD, $username . ":" . $password);  //UN and PW
-
-			# if POST, set content-type and legnth
-			if($httpmethod == "POST"){
-
-				curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
-					'Content-Type: application/json',                                                                                
-					'Content-Length: ' . strlen($data))                                                                       
-				); 
-
-			}
-
-
-
-
-	    	$output['data'] = curl_exec($ch);
-			$output['headers'] = curl_getinfo($ch);
-
-
-			curl_close($ch);
-
-			return $output;
-
-
-	    }
+	    
 	}
 
 ?>
